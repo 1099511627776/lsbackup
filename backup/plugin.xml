@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin>
+    <name>
+	<lang name="default">Backup full LS Site into single archive</lang>
+    </name>
+    <author>
+	<lang name="default">1099511627776</lang>
+    </author>
+    <version>0.1</version>
+    <settings>{backup}admin/</settings>
+    <requires>
+	<livestreet>v1.0</livestreet>
+    </requires>
+    <description>
+	<lang name="default">Backup full LS Site into single archive</lang>
+	<lang name="russian">Backup full LS Site into single archive</lang>
+    </description>
+</plugin>
