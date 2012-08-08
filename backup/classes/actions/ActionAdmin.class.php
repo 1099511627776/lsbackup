@@ -25,44 +25,26 @@ class PluginBackup_ActionAdmin extends ActionPlugin
     protected function RegisterEvent()
     {
 		$this->AddEvent('admin', 'EventAdmin');
+		$this->AddEvent('stage1', 'EventStage1');
+		$this->AddEvent('stage2', 'EventStage2');
     }
 
+    protected function EventStage1(){
+    	$status = $this->PluginBackup_Backup_fillDirectoryStructure();
+    	$this->Viewer_Assign('aSkiped',$status[0]);
+    	$this->Viewer_Assign('aAdded',$status[1]);
+		$this->SetTemplateAction('stage1');
+    }
+    protected function EventStage2() {
+	        $this->Viewer_SetResponseAjax('json');
+	        $res = $this->PluginBackup_Backup_ArchiveFiles(100);
+	        $this->Viewer_AssignAjax('status',$res[0]);
+	        $this->Viewer_AssignAjax('message',$res[1]);
+    }
 
     protected function EventAdmin()
     {
-		$zip = new ZipArchive();
-		$sDir = '/home/u04104/test.goloskarpat.info/html/';
-		$added = 0;
-		$skiped = 0;
 		$this->SetTemplateAction('admin');
-		if($zip->open(dirname(__FILE__).'/backup.zip',ZipArchive::CREATE) === true) {
-			$oDir = new RecursiveIteratorIterator (new RecursiveDirectoryIterator ($sDir), RecursiveIteratorIterator::SELF_FIRST);
-			foreach ($oDir as $sFile) {
-			    if ( preg_match ('/\/compiled.*?/i', $sFile) || 
-			         preg_match ('/\/cache.*?/i', $sFile) ||
-			         preg_match ('/\/tmp.*?/i', $sFile) ||
-			         preg_match ('/\/\.\.$/i', $sFile) ||
-			         preg_match ('/\/\.$/i', $sFile)
-			         ) {
-			    	//print "skip: $sFile\n";
-			    	$skiped++;
-			    } else {
-			    	//print "add: $sFile\n";
-			    	if(is_dir($sFile)) {
-				    	$zip->addEmptyDir($sFile);
-			    	} else {
-				    	$zip->addFile($sFile,substr($sFile, strlen ($sDir)));
-			    	}
-			    	$added++;
-				}
-				if (($added+$skiped) % 100 == 0) {
-					$this->Message_AddNotice('Added:'.$added.', Skipped:'.$skiped,'statistics');
-			    }
-			}
-			$zip->close();
-		} else {
-			print "error";
-		} ;
     }
 
     public function EventShutdown()
