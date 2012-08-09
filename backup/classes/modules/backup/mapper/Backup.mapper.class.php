@@ -14,7 +14,7 @@ class PluginBackup_ModuleBackup_MapperBackup extends Mapper {
 		$sql = 'DELETE FROM '.Config::Get('plugin.backup.table.backup_files').' LIMIT '.intval($count);
 		$this->oDb->query($sql);
 	}
-	public function getPerparedFiles($count) {
+	public function getPreparedFiles($count) {
 		$sql = 'SELECT filepath FROM '.Config::Get('plugin.backup.table.backup_files').' LIMIT '.intval($count);
 	    if ($aRows=$this->oDb->select($sql)) {
 		     return $aRows;

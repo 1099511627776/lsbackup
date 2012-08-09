@@ -10,6 +10,7 @@ $config['skiped'] = array(
 '\/log.*?');
 
 $config['filename'] = 'backup.zip';
+$config['sqlfilename'] = 'backup.sql';
 $config['filepath'] = dirname(__FILE__);
 
 Config::Set('router.page.backup', 'PluginBackup_ActionAdmin');

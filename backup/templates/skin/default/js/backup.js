@@ -8,3 +8,9 @@ function archiveItems(path,count) {
 		}
 	});	
 }
+
+function prepareSQL(path) {
+	ls.ajax(path,{},function(data){	
+		ls.msg.notice(data.message);
+	});		
+}

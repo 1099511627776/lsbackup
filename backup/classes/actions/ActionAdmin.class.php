@@ -27,6 +27,8 @@ class PluginBackup_ActionAdmin extends ActionPlugin
 		$this->AddEvent('admin', 'EventAdmin');
 		$this->AddEvent('stage1', 'EventStage1');
 		$this->AddEvent('stage2', 'EventStage2');
+		$this->AddEvent('stage3', 'EventStage3');
+		$this->AddEvent('stage4', 'EventStage4');
     }
 
     protected function EventStage1(){
@@ -35,11 +37,25 @@ class PluginBackup_ActionAdmin extends ActionPlugin
     	$this->Viewer_Assign('aAdded',$status[1]);
 		$this->SetTemplateAction('stage1');
     }
+
     protected function EventStage2() {
-	        $this->Viewer_SetResponseAjax('json');
-	        $res = $this->PluginBackup_Backup_ArchiveFiles(100);
-	        $this->Viewer_AssignAjax('status',$res[0]);
-	        $this->Viewer_AssignAjax('message',$res[1]);
+	    $this->Viewer_SetResponseAjax('json');
+	    $res = $this->PluginBackup_Backup_ArchiveFiles(100);
+	    $this->Viewer_AssignAjax('status',$res[0]);
+	    $this->Viewer_AssignAjax('message',$res[1]);
+    }
+
+    protected function EventStage3() {
+	    $this->Viewer_SetResponseAjax('json');
+	    $res = $this->PluginBackup_DBBackup_prepareArchive();
+	    $this->Viewer_AssignAjax('status',$res[0]);
+	    $this->Viewer_AssignAjax('message',$res[1]);
+    }
+    protected function EventStage4() {
+	    $this->Viewer_SetResponseAjax('json');
+	    $res = $this->PluginBackup_DBBackup_archiveTables(10);
+	    $this->Viewer_AssignAjax('status',$res[0]);
+	    $this->Viewer_AssignAjax('message',$res[1]);
     }
 
     protected function EventAdmin()

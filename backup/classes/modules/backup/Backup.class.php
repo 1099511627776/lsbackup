@@ -59,7 +59,7 @@ class PluginBackup_ModuleBackup extends Module
 		$zip = new ZipArchive();
 		$i = 0;
 		if($zip->open(Config::Get('plugin.backup.filepath').'/'.Config::Get('plugin.backup.filename'),ZipArchive::CREATE) === true) {
-			$files = $this->oMapper->getPerparedFiles($count);
+			$files = $this->oMapper->getPreparedFiles($count);
 			if($files) {
 				foreach($files as $file) {
 					if(is_dir($file['filepath'])) {
