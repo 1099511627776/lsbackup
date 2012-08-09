@@ -49,12 +49,14 @@ class PluginBackup_ModuleDBBackup_MapperDBBackup extends Mapper {
 					foreach ($row as $key=>$value) {
 						$tmp .= $this->oDb->escape($value).',';
 					}
+					$tmp = substr($tmp,0,-1);
+					$tmp .= '),(';
 				}
-				$tmp = substr($tmp,0,-1);
+				$tmp = substr($tmp,0,-3);
 			}
-			$tmp .= '),(';
+			$tmp .= ')';
 		}
-		$tmp = substr($tmp,0,-2);
+		//$tmp = substr($tmp,0,-1);
 		return $tmp;
 	}
 	public function getPreparedTables($count) {
