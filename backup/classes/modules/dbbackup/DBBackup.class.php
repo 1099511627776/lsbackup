@@ -40,7 +40,10 @@ class PluginBackup_ModuleDBBackup extends Module
 	 			fwrite($fh,'DROP TABLE IF EXISTS '.$table['filepath'].";\n");
 	 			fwrite($fh,$create_table.";\n\n");
 	 			$dump_table = $this->oMapper->getTableData($table['filepath']);
-	 			fwrite($fh,$dump_table.";\n\n");
+	 			if(trim($dump_table)) {
+		 			fwrite($fh,trim($dump_table).";\n");
+	 			}
+	 			fwrite($fh,"-- LSBackup: Dump of the ".$table['filepath']." table ### \n\n");
 	 			$i++;
 			}
 			fclose($fh);

@@ -50,11 +50,14 @@ class PluginBackup_ModuleDBBackup_MapperDBBackup extends Mapper {
 						$tmp .= $this->oDb->escape($value).',';
 					}
 					$tmp = substr($tmp,0,-1);
-					$tmp .= '),(';
+					$tmp .= "),\n\t(";
 				}
-				$tmp = substr($tmp,0,-3);
+				$tmp = substr($tmp,0,-5);
 			}
-			$tmp .= ')';
+			$tmp .= ')';			
+		}
+		if (strpos($tmp,') VALUES ()')) {
+			$tmp = '';
 		}
 		//$tmp = substr($tmp,0,-1);
 		return $tmp;

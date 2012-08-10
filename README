@@ -1,0 +1,8 @@
+Backup plugin for LiveStreet.
+
+Versions:
+
+very Alpha:
+
+ - Packs files into ZIP archive using PHP's ZipArchive
+ - Dumps SQL database into file
