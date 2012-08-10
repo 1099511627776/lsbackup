@@ -35,6 +35,7 @@ class PluginBackup_ModuleDBBackup extends Module
 		if ($tables) {
 			$fh = fopen(Config::Get('plugin.backup.filepath').'/'.Config::Get('plugin.backup.sqlfilename'),"a");
 			$i = 0;
+			fwrite($fh,"SET foreign_key_checks = 0;\n");
 			foreach($tables as $table) {
 				$create_table = $this->oMapper->getCreateTable($table['filepath']);
 	 			fwrite($fh,'DROP TABLE IF EXISTS '.$table['filepath'].";\n");
@@ -46,6 +47,7 @@ class PluginBackup_ModuleDBBackup extends Module
 	 			fwrite($fh,"-- LSBackup: Dump of the ".$table['filepath']." table ### \n\n");
 	 			$i++;
 			}
+			fwrite($fh,"SET foreign_key_checks = 1;\n");
 			fclose($fh);
 			$this->oMapper->deleteFirstTables($count);
 			return array($i,"$i tables saved");
