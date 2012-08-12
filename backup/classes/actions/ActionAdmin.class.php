@@ -29,6 +29,45 @@ class PluginBackup_ActionAdmin extends ActionPlugin
 		$this->AddEvent('stage2', 'EventStage2');
 		$this->AddEvent('stage3', 'EventStage3');
 		$this->AddEvent('stage4', 'EventStage4');
+		$this->AddEvent('ftp', 'EventSendFTP');
+    }
+    protected function EventSendFTP() {
+	    $this->Viewer_SetResponseAjax('json');
+
+    	$ftphost = Config::Get('plugin.backup.ftphost');
+    	$ftpuser = Config::Get('plugin.backup.ftpuser');
+    	$ftppwd = Config::Get('plugin.backup.ftppwd');
+    	$ftppath = Config::Get('plugin.backup.ftppath');
+    	$ftplocalarh = Config::Get('plugin.backup.filepath').'/'.Config::Get('plugin.backup.filename');
+    	$ftplocalsql = Config::Get('plugin.backup.filepath').'/'.Config::Get('plugin.backup.sqlfilename');
+		$conn_id = ftp_connect($ftphost);
+		if($conn_id) {
+			if(ftp_login($conn_id, $ftpuser, $ftppwd)) {
+				ftp_pasv ($conn_id, true);
+				$upload_arh = ftp_put($conn_id, $ftppath.Config::Get('plugin.backup.filename'), $ftplocalarh, FTP_BINARY);
+				$upload_sql = ftp_put($conn_id, $ftppath.Config::Get('plugin.backup.sqlfilename'), $ftplocalsql, FTP_BINARY);
+				if ($upload_arh && $upload_sql) {
+				    $this->Viewer_AssignAjax('status','0');
+				    $this->Viewer_AssignAjax('message','upload successfull');
+				} elseif ((!$upload_arh) && (!$upload_sql)) {
+				    $this->Viewer_AssignAjax('status','-1');
+				    $this->Viewer_AssignAjax('message','upload error');								
+				} elseif (!$upload_arh) {
+				    $this->Viewer_AssignAjax('status','-1');
+				    $this->Viewer_AssignAjax('message','upload arh error');
+				} elseif (!$upload_sql) {
+				    $this->Viewer_AssignAjax('status','-1');
+				    $this->Viewer_AssignAjax('message','upload sql error');
+				}
+			} else {
+			    $this->Viewer_AssignAjax('status','-1');
+			    $this->Viewer_AssignAjax('message','ftp_login error');			
+			}
+		} else {
+		    $this->Viewer_AssignAjax('status','-1');
+		    $this->Viewer_AssignAjax('message','ftp_connect error');
+		}
+
     }
 
     protected function EventStage1(){

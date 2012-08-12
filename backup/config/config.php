@@ -13,6 +13,12 @@ $config['filename'] = 'backup.zip';
 $config['sqlfilename'] = 'backup.sql';
 $config['filepath'] = dirname(__FILE__);
 
+
+$config['ftphost'] = '';
+$config['ftpuser'] = '';
+$config['ftppwd'] = '';
+$config['ftppath'] = '';
+
 Config::Set('router.page.backup', 'PluginBackup_ActionAdmin');
 
 return $config;

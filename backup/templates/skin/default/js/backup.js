@@ -14,3 +14,8 @@ function prepareSQL(path) {
 		ls.msg.notice(data.message);
 	});		
 }
+function processExport (path) {
+	ls.ajax(path,{},function(data){	
+		ls.msg.notice(data.message);
+	});		
+}

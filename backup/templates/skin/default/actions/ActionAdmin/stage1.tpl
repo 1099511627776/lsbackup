@@ -12,4 +12,7 @@
 	<a href="#" class="button button-write" onclick="archiveItems('{router page='backup'}stage4'); return false;">
 		{$aLang.plugin.backup.archive_sqldump}
 	</a>&nbsp;
+	<a href="#" class="button button-write" onclick="processExport('{router page='backup'}ftp'); return false;">
+		FTP Send
+	</a>&nbsp;
 </div>
